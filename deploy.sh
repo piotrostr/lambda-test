@@ -19,6 +19,12 @@ aws iam attach-role-policy \
         --policy-arn \
         arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
 
+printf "Running tests\n"
+if ! go test -v ./...; then
+        printf "Tests failed\n"
+        exit 1
+fi
+
 printf "Building and packing\n"
 GOARCH=amd64 GOOS=linux CGO_ENABLED=0 go build -o main main.go
 zip func.zip main
