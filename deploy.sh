@@ -20,7 +20,7 @@ aws iam attach-role-policy \
         arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
 
 printf "Building and packing\n"
-go build -o main main.go
+GOARCH=amd64 GOOS=linux CGO_ENABLED=0 go build -o main main.go
 zip func.zip main
 
 if aws lambda get-function --function-name $function_name > /dev/null; then
